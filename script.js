@@ -6,10 +6,6 @@ const inp2 = document.querySelector("#kiri")
 let user = ""
 let playerkey = ""
 
-  const saved = JSON.parse(localStorage.getItem('key')) || ""
-  playerkey = saved
-  console.log(playerkey)
-
 async function load() {
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander');
   const data = await response.json();
@@ -44,28 +40,23 @@ async function load() {
   }
 }
 
-function saveKey() {
-  localStorage.setItem("key", JSON.stringify(playerkey))
-}
-
 joinBTN.addEventListener("click", async function () {
   if (!playerkey) {
   let username = inp.value
-  const messageData = { action: 'join', username: username }
+  const sendData = { action: 'join', username: username }
 
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(messageData)
+    body: JSON.stringify(sendData)
   });
 
   const result = await response.json()
   playerkey = result.player_key
   user = username
   load()
-  saveKey()
   }
   else {
     alert("You already joined")
@@ -81,13 +72,13 @@ maps.addEventListener("click", async function (move) {
     let x = move.clientX - suurus.left
     let y = move.clientY - suurus.top
 
-    const messageData = { action: 'move', player_key: playerkey, x: x, y: y };
+    const sendData = { action: 'move', player_key: playerkey, x: x, y: y };
     const response = await fetch('https://tinkr.tech/sdb/melvinm/wander', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(messageData)
+      body: JSON.stringify(sendData)
     });
     load()
   }
@@ -99,14 +90,14 @@ SendMessage.addEventListener("click", async function() {
     alert("Something went wrong!")
   }
   else {
-  const messageData = { action: 'talk', player_key: playerkey, message: talk };
+  const sendData = { action: 'talk', player_key: playerkey, message: talk };
         
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander', {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json'
             },
-     body: JSON.stringify(messageData)
+     body: JSON.stringify(sendData)
    });
    inp2.value = ""
    load()
