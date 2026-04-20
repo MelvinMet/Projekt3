@@ -7,6 +7,8 @@ let user = ""
 let playerkey = ""
 
 async function load() {
+  const saved = JSON.parse(localStorage.getItem('key'));
+  playerkey = saved
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander');
   const data = await response.json();
    maps.innerHTML = ""
@@ -21,6 +23,7 @@ async function load() {
 
     const playerMessage = document.createElement("p")
     playerMessage.textContent = idk.message + "\n↓"
+    playerMessage.style.color = "white"
     playerMessage.style.textAlign = "center"
     if (idk.message === null) {
      playerMessage.textContent = "" 
@@ -39,7 +42,12 @@ async function load() {
   }
 }
 
+function saveKey() {
+  localStorage.setItem("key", JSON.stringify(playerkey))
+}
+
 joinBTN.addEventListener("click", async function () {
+  if (playerkey === "") {
   let username = inp.value
   const messageData = { action: 'join', username: username }
 
@@ -55,6 +63,11 @@ joinBTN.addEventListener("click", async function () {
   playerkey = result.player_key
   user = username
   load()
+  saveKey()
+  }
+  else {
+    alert("You already joined")
+  }
 })
 
 maps.addEventListener("click", async function (move) {
@@ -65,7 +78,6 @@ maps.addEventListener("click", async function (move) {
     let suurus = maps.getBoundingClientRect()
     let x = move.clientX - suurus.left
     let y = move.clientY - suurus.top
-    console.log(x, y)
 
     const messageData = { action: 'move', player_key: playerkey, x: x, y: y };
     const response = await fetch('https://tinkr.tech/sdb/melvinm/wander', {
