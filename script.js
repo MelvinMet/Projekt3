@@ -8,6 +8,7 @@ let playerkey = ""
 
   const saved = JSON.parse(localStorage.getItem('key')) || ""
   playerkey = saved
+  console.log(playerkey)
 
 async function load() {
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander');
@@ -48,7 +49,7 @@ function saveKey() {
 }
 
 joinBTN.addEventListener("click", async function () {
-  if (playerkey === "") {
+  if (!playerkey) {
   let username = inp.value
   const messageData = { action: 'join', username: username }
 
