@@ -6,9 +6,10 @@ const inp2 = document.querySelector("#kiri")
 let user = ""
 let playerkey = ""
 
-async function load() {
-  const saved = JSON.parse(localStorage.getItem('key'));
+  const saved = JSON.parse(localStorage.getItem('key')) || ""
   playerkey = saved
+
+async function load() {
   const response = await fetch('https://tinkr.tech/sdb/melvinm/wander');
   const data = await response.json();
    maps.innerHTML = ""
